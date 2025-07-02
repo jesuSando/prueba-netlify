@@ -1,11 +1,23 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hola</title>
-</head>
-<body>
-    <p>hola desde netlify serverless</p>
-</body>
-</html>
+<form id="contact-form">
+    <input type="text" name="nombre" placeholder="Tu nombre" required>
+    <input type="email" name="email" placeholder="Tu correo" required>
+    <textarea name="mensaje" placeholder="Tu mensaje" required></textarea>
+    <button type="submit">Enviar</button>
+  </form>
+  
+  <script>
+  document.getElementById("contact-form").addEventListener("submit", async function (e) {
+    e.preventDefault();
+    const formData = new FormData(this);
+    const data = Object.fromEntries(formData.entries());
+  
+    const res = await fetch("/.netlify/functions/enviarCorreo", {
+      method: "POST",
+      body: JSON.stringify(data),
+    });
+  
+    const result = await res.json();
+    alert(result.mensaje || result.error);
+  });
+  </script>
+  
